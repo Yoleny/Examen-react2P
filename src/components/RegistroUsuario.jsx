@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import './styles.css';
+
 
 export const Registro = () => {
 
     // Logica de la vista
     const url = 'http://localhost:4000/api/usuario'
+    
     //Hooks: Componente nativo de REACT que se encarga de enlazar el contenido de la vista (HTML) la logica del componente en si
 
     const [usuario, setUsuario] = useState();
@@ -18,6 +21,8 @@ export const Registro = () => {
     const [pass, setPass] = useState();
 
     const [passConfirm, setPassConfirm] = useState();
+
+    const [image, setImage] = useState();
 
     const usuarioHandler = (event) => {
 
@@ -61,6 +66,13 @@ export const Registro = () => {
 
     }
 
+    const imageHandler = (event) => {
+
+      const { name, value } = event.target;
+      setImage(value);
+
+  }
+
     const submitHandler = async () => {
 
         event.preventDefault();
@@ -70,7 +82,9 @@ export const Registro = () => {
             contrasena: pass,
             nombre: nombre,
             apellido: apellido,
-            confirmacion_con: passConfirm
+            confirmacion_con: passConfirm,
+            imagen: image
+            
         }
 
         const result = await axios.post(url, data);
@@ -137,7 +151,11 @@ export const Registro = () => {
                                     name="passConfirm" onChange={passConfirmHandler} placeholder="Confirme su Contraseña" />
                             </div>
                         </div>
-
+                        <div className="form-group row">
+                        <label htmlFor="image">Foto students:</label>
+                        <input type="file" name="image" onChange={(event) => setImage(event.target.files[0])} />  
+                         
+                        </div>
                         <button type="submit" className="btn btn-primary w-100">Crear Usuario</button>
                     </fieldset>
                 </form>
@@ -145,4 +163,6 @@ export const Registro = () => {
         </>
     )
 }
+
 export default Registro;
+
